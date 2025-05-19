@@ -1,0 +1,30 @@
+-- Dữ liệu sinh viên từ lớp IE303.P23.CNCL.1
+
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Nguyễn Đức Đạt', '21520701', '21520701', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Phạm Bá Hoàng', '21520872', '21520872', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Tô Quốc Kiện', '21521029', '21521029', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Nguyễn Đỗ Đức Nguyên', '21521201', '21521201', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Lê Thanh Phong', '21521271', '21521271', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Dương Uy Quan', '21521323', '21521323', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Nguyễn Thành Trung', '21521595', '21521595', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Hồ Vũ An', '21521804', '21521804', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Trần Thanh Mẫn', '21522326', '21522326', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Đoàn Thị Tuyết Phương', '21522484', '21522484', 'Nữ', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Phan Thị Ngọc Ánh', '22520073', '22520073', 'Nữ', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Lê Đức Anh Duy', '22520315', '22520315', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Nguyễn Huỳnh Minh Kha', '22520598', '22520598', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Trần Lâm Ngọc Khanh', '22520653', '22520653', 'Nữ', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Ngô Tuấn Kiệt', '22520719', '22520719', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Phan Anh Kiệt', '22520723', '22520723', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Nguyễn Hồ Phi Long', '22520815', '22520815', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Lâm Tấn Nhật Minh', '22520863', '22520863', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Võ Uyển Nhi', '22521045', '22521045', 'Nữ', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Phạm Đinh Trang Nhung', '22521059', '22521059', 'Nữ', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Trần Thị Phương Thảo', '22521375', '22521375', 'Nữ', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Mai Võ Hoài Tiên', '22521468', '22521468', 'Nữ', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Nguyễn Thành Tính', '22521483', '22521483', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Nguyễn Hữu Trí', '22521520', '22521520', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Võ Tiến Trung', '22521574', '22521574', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Phan Nguyễn Anh Tuyền', '22521635', '22521635', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Lý Tuấn Văn', '22521650', '22521650', 'Nam', 'Kỹ thuật Thông tin');
+INSERT INTO students (name, password, mssv, gender, major) VALUES ('Trần Nhật Vĩ', '22521659', '22521659', 'Nam', 'Kỹ thuật Thông tin');

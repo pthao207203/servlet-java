@@ -1,0 +1,7 @@
+package crm.repository;
+
+public class StudentRepository {
+	public getStudentByMSSVPassword(String mssv, String password) {
+		
+	}
+}

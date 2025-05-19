@@ -1,0 +1,5 @@
+package crm.repository;
+
+public class StudentRepository {
+
+}

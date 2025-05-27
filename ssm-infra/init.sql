@@ -14,6 +14,7 @@ CREATE TABLE rooms (
     name VARCHAR(50),
     floor INT,
     type VARCHAR(50),
+	amount INT,
     geom GEOMETRY(POLYGONZ, 4326)
 );
 
@@ -29,22 +30,33 @@ CREATE TABLE students (
 CREATE TABLE teachers (
     id SERIAL PRIMARY KEY,
     name TEXT,
-    email TEXT
+    password TEXT NOT NULL,          
+    msgv VARCHAR(20) UNIQUE,      
+    gender VARCHAR(10),
+    major TEXT
 );
 
-CREATE TABLE schedules (
-    id SERIAL PRIMARY KEY,
-    room_id INT REFERENCES rooms(id),
-    subject_name TEXT,
-    teacher_id INT REFERENCES teachers(id),
-    time TIMESTAMP
+CREATE TABLE subjects (
+    id SERIAL PRIMARY KEY,                   
+    room_id INT REFERENCES rooms(id),       
+    subject_name TEXT,                       
+    teacher_id INT REFERENCES teachers(id), 
+
+    start_times TIMESTAMP[],                 
+    periods_per_day INT,                     
+    week_pattern BOOLEAN,                  
+    end_date DATE,    
+	student_ids INT[]   
 );
+
 
 CREATE TABLE ci_co (
     id SERIAL PRIMARY KEY,
-    student_id INT REFERENCES students(id),
-    room_id INT REFERENCES rooms(id),
-    checkin_time TIMESTAMP,
-    checkout_time TIMESTAMP
+    student_id INT REFERENCES students(id),             
+    room_id INT REFERENCES rooms(id),                    
+    checkin_time TIMESTAMP[],                            
+    checkout_time TIMESTAMP[],                            
+    status INT                                     
 );
+
 

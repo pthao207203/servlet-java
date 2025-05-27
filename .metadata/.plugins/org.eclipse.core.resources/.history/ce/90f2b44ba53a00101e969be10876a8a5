@@ -1,0 +1,59 @@
+package crm.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import crm.model.Cico;
+import crm.model.Teacher;
+import crm.payload.ResponseData;
+import crm.service.CicoService;
+import crm.service.LoginService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "CICO", urlPatterns = "/cico")
+public class CicoServlet extends HttpServlet {
+	
+	private CicoService cicoService = new CicoService();
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<Cico> list = new ArrayList<>();
+		list = cicoService.getAllCico();
+		
+		ResponseData data = new ResponseData();
+		data.setSuccess(list.size() > 0 ? true : false);
+		data.setDescription("");
+		data.setData(list);
+
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		PrintWriter printWriter = resp.getWriter();
+//		System.out.println(json);
+		printWriter.print(json);
+		printWriter.flush();
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int student_id = Integer.parseInt(req.getParameter("student_id"));
+		int room_id = Integer.parseInt(req.getParameter("room_id"));
+		int subject_id = Integer.parseInt(req.getParameter("subject_id"));
+		int status = Integer.parseInt(req.getParameter("status"));
+		boolean isCheck = cicoService.checkInCheckOut(student_id, room_id, subject_id, status);
+		
+		System.out.println(isCheck);
+		PrintWriter printWriter = resp.getWriter();
+		printWriter.print(isCheck);
+		printWriter.flush();
+	}
+}

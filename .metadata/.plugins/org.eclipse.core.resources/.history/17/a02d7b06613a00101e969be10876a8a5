@@ -1,0 +1,29 @@
+package crm.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import crm.service.LoginService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "CICO", urlPatterns = "/cico")
+public class CicoServlet extends HttpServlet {
+	
+	private CicoService cicoService = new CicoService();
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int student_id = Integer.parseInt(req.getParameter("student_id"));
+		int room_id = Integer.parseInt(req.getParameter("room_id"));
+		boolean isLogin = cicoService.checkInCheckOut(student_id, room_id);
+		
+		System.out.println(isLogin);
+		PrintWriter printWriter = resp.getWriter();
+		printWriter.print(isLogin);
+		printWriter.flush();
+	}
+}

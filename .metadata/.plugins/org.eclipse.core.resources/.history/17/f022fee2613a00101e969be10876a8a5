@@ -1,0 +1,19 @@
+package crm.service;
+
+import java.util.List;
+
+import crm.model.Student;
+import crm.model.Teacher;
+import crm.repository.CicoRepository;
+import crm.repository.StudentRepository;
+import crm.repository.TeacherRepository;
+
+public class CicoService {
+	private CicoRepository cicoRepository = new CicoRepository();
+	
+	public boolean checkInCheckOut(int student_id, int room_id) {
+		// TODO Auto-generated method stub
+		return cicoRepository.getCicoByStudentIdAndRoomIdCurrent(student_id, room_id) ;
+	}
+	
+}

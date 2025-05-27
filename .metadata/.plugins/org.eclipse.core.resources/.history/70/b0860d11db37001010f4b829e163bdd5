@@ -1,0 +1,34 @@
+package crm.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import crm.model.Teacher;
+import crm.repository.TeacherRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "Teacher", urlPatterns = "/teacher")
+public class TeacherServlet extends HttpServlet {
+	private TeacherRepository teacherRepository = new TeacherRepository();
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<Teacher> list = new ArrayList<>();
+		list = teacherRepository.getTeacher();
+		
+		PrintWriter printWriter = resp.getWriter();
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		System.out.println(json);
+		printWriter.print(json);
+		printWriter.flush();
+	}
+}

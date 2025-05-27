@@ -1,0 +1,7 @@
+package crm.common;
+
+public class Constant {
+	public static final String URL_TEACHER_DELETE = "/teacher";
+	public static final String URL_TEACHER_ADD = "/teacher/add";
+	public static final String URL_TEACHER_EDIT = "/teacher/edit";
+}

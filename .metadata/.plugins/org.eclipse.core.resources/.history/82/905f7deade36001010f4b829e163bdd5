@@ -1,0 +1,43 @@
+package crm.repository;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import crm.config.PostgresConnection;
+import crm.model.Student;
+import crm.model.Teacher;
+
+public class TeacherRepository {
+	public List<Teacher> getTeacherByMSSVPassword(String msgv, String password) {
+		List<Teacher> list = new ArrayList<>();
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "select * from students where mssv = ? and password = ? "; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, msgv);
+			preparedStatement.setString(2, password);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Teacher teacher = new Teacher();
+				teacher.setId(resultSet.getInt("id"));
+				teacher.setMsgv(resultSet.getString("msgv"));
+				teacher.setName(resultSet.getString("name"));
+				teacher.setGender(resultSet.getString("gender"));
+				teacher.setMajor(resultSet.getString("major"));
+				
+				list.add(teacher);
+			}
+			connection.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return list;
+	}
+}

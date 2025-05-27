@@ -1,0 +1,165 @@
+package crm.repository;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import crm.config.PostgresConnection;
+import crm.model.Cico;
+import crm.model.Student;
+import crm.model.Teacher;
+
+public class CicoRepository {
+	public List<Teacher> getTeacherByMSSVPassword(String msgv, String password) {
+		List<Teacher> list = new ArrayList<>();
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "select * from teachers where msgv = ? and password = ? "; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, msgv);
+			preparedStatement.setString(2, password);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Teacher teacher = new Teacher();
+				teacher.setId(resultSet.getInt("id"));
+				teacher.setMsgv(resultSet.getString("msgv"));
+				teacher.setName(resultSet.getString("name"));
+				teacher.setGender(resultSet.getString("gender"));
+				teacher.setMajor(resultSet.getString("major"));
+				
+				list.add(teacher);
+			}
+			connection.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return list;
+	}
+
+	public List<Teacher> getTeacher() {
+		List<Teacher> list = new ArrayList<>();
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "select * from teachers"; 
+			PreparedStatement statement = connection.prepareStatement(query);
+			
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				Teacher teacher = new Teacher();
+				teacher.setId(resultSet.getInt("id"));
+				teacher.setMsgv(resultSet.getString("msgv"));
+				teacher.setName(resultSet.getString("name"));
+				teacher.setGender(resultSet.getString("gender"));
+				teacher.setMajor(resultSet.getString("major"));
+				
+				list.add(teacher);
+			}
+			connection.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return list;
+	}
+	
+	public int deleteTeacherById(int id) {
+		int isDelete = 0;
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "delete from teachers where id = ?"; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, id);
+			isDelete = preparedStatement.executeUpdate();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return isDelete;
+	}
+
+	public int addTeacher(Teacher teacher) {
+		int isAdd = 0;
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "insert into teachers(name, password, msgv, gender, major) values(?, ?, ?, ?, ?);"; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, teacher.getName());
+			preparedStatement.setString(2, teacher.getPassword());
+			preparedStatement.setString(3, teacher.getMsgv());
+			preparedStatement.setString(4, teacher.getGender());
+			preparedStatement.setString(5, teacher.getMajor());
+			
+			isAdd = preparedStatement.executeUpdate();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return isAdd;
+	}
+
+	public int editTeacherById(int id, Teacher teacher) {
+		int isEdit = 0;
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "UPDATE teachers SET name = ?, password = ?, msgv = ?, gender = ?, major = ? WHERE id = ?;"; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, teacher.getName());
+			preparedStatement.setString(2, teacher.getPassword());
+			preparedStatement.setString(3, teacher.getMsgv());
+			preparedStatement.setString(4, teacher.getGender());
+			preparedStatement.setString(5, teacher.getMajor());
+			preparedStatement.setInt(6, id);
+			
+			isEdit = preparedStatement.executeUpdate();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return isEdit;
+	}
+
+	public List<Cico> getCicoByStudentIdAndRoomIdCurrent() {
+		List<Cico> list = new ArrayList<>();
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "select * from cico where student_id = ? and room_id = ? "; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, student_id);
+			preparedStatement.setInt(2, room_id);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Teacher teacher = new Teacher();
+				teacher.setId(resultSet.getInt("id"));
+				teacher.setMsgv(resultSet.getString("msgv"));
+				teacher.setName(resultSet.getString("name"));
+				teacher.setGender(resultSet.getString("gender"));
+				teacher.setMajor(resultSet.getString("major"));
+				
+				list.add(teacher);
+			}
+			connection.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return list;
+	}
+}

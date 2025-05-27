@@ -1,0 +1,82 @@
+package crm.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import crm.common.Constant;
+import crm.model.Teacher;
+import crm.payload.ResponseData;
+import crm.repository.TeacherRepository;
+import crm.service.TeacherService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "Teacher", urlPatterns = {Constant.URL_TEACHER_ADD, Constant.URL_TEACHER_ADD})
+public class TeacherServlet extends HttpServlet {
+	private TeacherService teacherService = new TeacherService();
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<Teacher> list = new ArrayList<>();
+		list = teacherService.getAllTeacher();
+		
+		ResponseData data = new ResponseData();
+		data.setSuccess(list.size() > 0 ? true : false);
+		data.setDescription("");
+		data.setData(list);
+
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTP-8");
+		PrintWriter printWriter = resp.getWriter();
+		System.out.println(json);
+		printWriter.print(json);
+		printWriter.flush();
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		int id = Integer.parseInt(req.getParameter("id"));
+//		
+//		boolean isSuccess = teacherService.deleteById(id);
+//		
+//		ResponseData data = new ResponseData();
+//		data.setSuccess(isSuccess);
+//		data.setDescription("");
+//		data.setData("");
+//
+//		Gson gson = new Gson();
+//		String json = gson.toJson(data);
+//		
+//		resp.setContentType("application/json");
+//		resp.setCharacterEncoding("UTP-8");
+//		PrintWriter printWriter = resp.getWriter();
+//		printWriter.print(json);
+//		printWriter.flush();
+		
+		String urlPath = req.getServletPath();
+		
+		switch (urlPath) {
+		case Constant.URL_TEACHER_DELETE: {
+			
+			break;
+		}
+		case Constant.URL_TEACHER_ADD: {
+			
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + urlPath);
+		}
+	}
+	
+	private void deleteTeacher(int id);
+}

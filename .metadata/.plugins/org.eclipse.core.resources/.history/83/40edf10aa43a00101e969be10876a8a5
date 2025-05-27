@@ -1,0 +1,176 @@
+package crm.repository;
+
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import crm.config.PostgresConnection;
+import crm.model.Cico;
+import crm.model.Student;
+import crm.model.Teacher;
+
+public class CicoRepository {
+	public List<Cico> getCicoByStudentIdAndRoomIdCurrent(int student_id, int room_id) {
+		List<Cico> list = new ArrayList<>();
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "select * from ci_co where student_id = ? and room_id = ? "; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, student_id);
+			preparedStatement.setInt(2, room_id);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Cico cico = new Cico();
+				cico.setId(resultSet.getInt("id"));
+				cico.setStudent_id(resultSet.getInt("student_id"));
+				cico.setRoom_id(resultSet.getInt("room_id"));
+				cico.setSubject_id(resultSet.getInt("subject_id"));
+				cico.setStatus(resultSet.getInt("status"));
+				Array sqlCheckinArray = resultSet.getArray("checkin_time");
+			    if (sqlCheckinArray != null) {
+			        Timestamp[] checkinTimestamps = (Timestamp[]) sqlCheckinArray.getArray();
+			        ArrayList<Timestamp> checkinList = new ArrayList<>();
+			        for (Timestamp ts : checkinTimestamps) {
+			            checkinList.add(ts);
+			        }
+			        cico.setCheckin_time(checkinList);
+			    } else {
+			        cico.setCheckin_time(new ArrayList<>());
+			    }
+
+			    Array sqlCheckoutArray = resultSet.getArray("checkout_time");
+			    if (sqlCheckoutArray != null) {
+			        Timestamp[] checkoutTimestamps = (Timestamp[]) sqlCheckoutArray.getArray();
+			        ArrayList<Timestamp> checkoutList = new ArrayList<>();
+			        for (Timestamp ts : checkoutTimestamps) {
+			            checkoutList.add(ts);
+			        }
+			        cico.setCheckout_time(checkoutList);
+			    } else {
+			        cico.setCheckout_time(new ArrayList<>());
+			    }
+				list.add(cico);
+			}
+			connection.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return list;
+	}
+
+	public List<Cico> getCico() {
+		List<Cico> list = new ArrayList<>();
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "select * from ci_co"; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Cico cico = new Cico();
+				cico.setId(resultSet.getInt("id"));
+				cico.setStudent_id(resultSet.getInt("student_id"));
+				cico.setRoom_id(resultSet.getInt("room_id"));
+				cico.setSubject_id(resultSet.getInt("subject_id"));
+				cico.setStatus(resultSet.getInt("status"));
+				Array sqlCheckinArray = resultSet.getArray("checkin_time");
+			    if (sqlCheckinArray != null) {
+			        Timestamp[] checkinTimestamps = (Timestamp[]) sqlCheckinArray.getArray();
+			        ArrayList<Timestamp> checkinList = new ArrayList<>();
+			        for (Timestamp ts : checkinTimestamps) {
+			            checkinList.add(ts);
+			        }
+			        cico.setCheckin_time(checkinList);
+			    } else {
+			        cico.setCheckin_time(new ArrayList<>());
+			    }
+
+			    Array sqlCheckoutArray = resultSet.getArray("checkout_time");
+			    if (sqlCheckoutArray != null) {
+			        Timestamp[] checkoutTimestamps = (Timestamp[]) sqlCheckoutArray.getArray();
+			        ArrayList<Timestamp> checkoutList = new ArrayList<>();
+			        for (Timestamp ts : checkoutTimestamps) {
+			            checkoutList.add(ts);
+			        }
+			        cico.setCheckout_time(checkoutList);
+			    } else {
+			        cico.setCheckout_time(new ArrayList<>());
+			    }
+
+				list.add(cico);
+			}
+			connection.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return list;
+	}
+
+	public int addCico(int student_id, int room_id, int subject_id) {
+		int isAdd = 0;
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "insert into ci_co(student_id, room_id, subject_id, status, checkin_time) values(?, ?, ?, ?, ?);"; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, student_id);
+			preparedStatement.setInt(2, room_id);
+			preparedStatement.setInt(3, subject_id);
+			preparedStatement.setInt(4, 0);
+			
+			Timestamp now = new Timestamp(System.currentTimeMillis());
+	        Timestamp[] checkinTimes = new Timestamp[] { now };
+	        Array sqlArray = connection.createArrayOf("timestamp", checkinTimes);
+	        preparedStatement.setArray(4, sqlArray);
+			
+			isAdd = preparedStatement.executeUpdate();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return isAdd;
+	}
+
+	public int updateCico(int student_id, int room_id, int subject_id, int status) {
+	    int isUpdated = 0;
+	    try {
+	        Connection connection = PostgresConnection.getConnection();
+	        String query = null;
+
+	        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+	        if (status == 0) {
+	            query = "UPDATE ci_co SET checkin_time = array_append(checkin_time, ?::timestamp), status = 0 WHERE student_id = ? AND room_id = ? AND subject_id = ?";
+	        } else if (status == 1) {
+	            query = "UPDATE ci_co SET checkout_time = array_append(checkout_time, ?::timestamp), status = 1 WHERE student_id = ? AND room_id = ? AND subject_id = ?";
+	        } else {
+	            return 0;
+	        }
+
+	        PreparedStatement preparedStatement = connection.prepareStatement(query);
+	        preparedStatement.setTimestamp(1, now);
+	        preparedStatement.setInt(2, student_id);
+	        preparedStatement.setInt(3, room_id);
+	        preparedStatement.setInt(4, subject_id);
+
+	        isUpdated = preparedStatement.executeUpdate();
+	        connection.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return isUpdated;
+	}
+}

@@ -1,0 +1,68 @@
+package crm.repository;
+
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import crm.config.PostgresConnection;
+import crm.model.Cico;
+import crm.model.Student;
+import crm.model.Teacher;
+
+public class CicoRepository {
+	public List<Cico> getCicoByStudentIdAndRoomIdCurrent(int student_id, int room_id) {
+		List<Cico> list = new ArrayList<>();
+		try {
+			Connection connection = PostgresConnection.getConnection();
+			String query = "select * from cico where student_id = ? and room_id = ? "; 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, student_id);
+			preparedStatement.setInt(2, room_id);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Cico cico = new Cico();
+				cico.setId(resultSet.getInt("id"));
+				cico.setStudent_id(resultSet.getInt("student_id"));
+				cico.setStatus(resultSet.getInt("status"));
+				Array sqlCheckinArray = resultSet.getArray("checkin_time");
+			    if (sqlCheckinArray != null) {
+			        Timestamp[] checkinTimestamps = (Timestamp[]) sqlCheckinArray.getArray();
+			        ArrayList<Timestamp> checkinList = new ArrayList<>();
+			        for (Timestamp ts : checkinTimestamps) {
+			            checkinList.add(ts);
+			        }
+			        cico.setCheckin_time(checkinList);
+			    } else {
+			        cico.setCheckin_time(new ArrayList<>());
+			    }
+
+			    Array sqlCheckoutArray = resultSet.getArray("checkout_time");
+			    if (sqlCheckoutArray != null) {
+			        Timestamp[] checkoutTimestamps = (Timestamp[]) sqlCheckoutArray.getArray();
+			        ArrayList<Timestamp> checkoutList = new ArrayList<>();
+			        for (Timestamp ts : checkoutTimestamps) {
+			            checkoutList.add(ts);
+			        }
+			        cico.setCheckout_time(checkoutList);
+			    } else {
+			        cico.setCheckout_time(new ArrayList<>());
+			    }
+
+				list.add(cico);
+			}
+			connection.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		}
+		
+		return list;
+	}
+}

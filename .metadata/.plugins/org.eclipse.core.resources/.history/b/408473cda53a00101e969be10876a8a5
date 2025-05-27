@@ -1,0 +1,25 @@
+package crm.service;
+
+import java.util.List;
+
+import crm.model.Cico;
+import crm.model.Student;
+import crm.model.Teacher;
+import crm.repository.CicoRepository;
+import crm.repository.StudentRepository;
+import crm.repository.TeacherRepository;
+
+public class CicoService {
+	private CicoRepository cicoRepository = new CicoRepository();
+	
+	public boolean checkInCheckOut(int student_id, int room_id, int subject_id, int status) {
+		// TODO Auto-generated method stub
+		return (cicoRepository.getCicoByStudentIdAndRoomIdCurrent(student_id, room_id, subject_id).size() > 0 ? cicoRepository.updateCico(student_id, room_id, subject_id, status) : cicoRepository.addCico(student_id, room_id, subject_id)) > 0 ;
+	}
+
+	public List<Cico> getAllCico(int room_id) {
+		List<Cico>  cico = cicoRepository.getCico(room_id);
+		return cico;
+	}
+	
+}

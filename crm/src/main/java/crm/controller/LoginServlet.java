@@ -30,6 +30,5 @@ public class LoginServlet extends HttpServlet {
 		PrintWriter printWriter = resp.getWriter();
 		printWriter.print(isLogin);
 		printWriter.flush();
-		
 	}
 }

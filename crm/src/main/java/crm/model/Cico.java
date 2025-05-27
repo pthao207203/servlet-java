@@ -1,0 +1,57 @@
+package crm.model;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+public class Cico {
+	private int id;
+    private int student_id;
+    private int room_id;     
+    private int subject_id;       
+	private ArrayList<Timestamp> checkin_time;   
+    private ArrayList<Timestamp> checkout_time;    
+    private int status;
+    
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getStudent_id() {
+		return student_id;
+	}
+	public void setStudent_id(int student_id) {
+		this.student_id = student_id;
+	}
+	public int getRoom_id() {
+		return room_id;
+	}
+	public void setRoom_id(int room_id) {
+		this.room_id = room_id;
+	}
+    public int getSubject_id() {
+		return subject_id;
+	}
+	public void setSubject_id(int subject_id) {
+		this.subject_id = subject_id;
+	}
+	public ArrayList<Timestamp> getCheckin_time() {
+		return checkin_time;
+	}
+	public void setCheckin_time(ArrayList<Timestamp> checkin_time) {
+		this.checkin_time = checkin_time;
+	}
+	public ArrayList<Timestamp> getCheckout_time() {
+		return checkout_time;
+	}
+	public void setCheckout_time(ArrayList<Timestamp> checkout_time) {
+		this.checkout_time = checkout_time;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+}

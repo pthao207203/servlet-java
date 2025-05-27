@@ -1,0 +1,113 @@
+package crm.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import crm.common.Constant;
+import crm.model.Teacher;
+import crm.payload.ResponseData;
+import crm.service.TeacherService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "Teacher", urlPatterns = {Constant.URL_TEACHER_ADD, Constant.URL_TEACHER_DELETE})
+public class TeacherServlet extends HttpServlet {
+	private TeacherService teacherService = new TeacherService();
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<Teacher> list = new ArrayList<>();
+		list = teacherService.getAllTeacher();
+		
+		ResponseData data = new ResponseData();
+		data.setSuccess(list.size() > 0 ? true : false);
+		data.setDescription("");
+		data.setData(list);
+
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTP-8");
+		PrintWriter printWriter = resp.getWriter();
+		System.out.println(json);
+		printWriter.print(json);
+		printWriter.flush();
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String urlPath = req.getServletPath();
+		
+		switch (urlPath) {
+		case Constant.URL_TEACHER_DELETE: {
+			deleteTeacher(req, resp);
+			break;
+		}
+		case Constant.URL_TEACHER_ADD: {
+			addTeacher(req, resp);
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + urlPath);
+		}
+	}
+	
+	private void addTeacher(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String name = req.getParameter("teacherName");
+		String password = req.getParameter("password");
+		String msgv = req.getParameter("msgv");
+		String gender = req.getParameter("gender");
+		String major = req.getParameter("major");
+		
+		Teacher teacher = new Teacher();
+		teacher.setName(name);
+		teacher.setPassword(password);
+		teacher.setMsgv(msgv);
+		teacher.setGender(gender);
+		teacher.setMajor(major);
+		
+		boolean isSuccess = teacherService.addTeacher(teacher);
+		
+		ResponseData data = new ResponseData();
+		data.setSuccess(isSuccess);
+		data.setDescription("");
+		data.setData("");
+
+		Gson gson = new Gson();
+		String json = gson.toJson(data);
+		
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTP-8");
+		PrintWriter printWriter = resp.getWriter();
+		printWriter.print(json);
+		printWriter.flush();
+	}
+
+	private void deleteTeacher(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		int id = Integer.parseInt(req.getParameter("id"));
+		
+		boolean isSuccess = teacherService.deleteById(id);
+		
+		ResponseData data = new ResponseData();
+		data.setSuccess(isSuccess);
+		data.setDescription("");
+		data.setData("");
+
+		Gson gson = new Gson();
+		String json = gson.toJson(data);
+		
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTP-8");
+		PrintWriter printWriter = resp.getWriter();
+		printWriter.print(json);
+		printWriter.flush();
+	}
+}

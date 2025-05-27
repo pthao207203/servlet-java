@@ -1,0 +1,13 @@
+package crm.model;
+
+import java.sql.Time;
+import java.util.ArrayList;
+
+public class Cico {
+	private int id;
+    private int student_id;
+    private int room_id;          
+    private ArrayList<Time> checkin_time;   
+    private ArrayList<Time> checkout_time;    
+    private int status;
+}

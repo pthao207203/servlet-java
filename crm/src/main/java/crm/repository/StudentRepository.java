@@ -39,4 +39,86 @@ public class StudentRepository {
 		
 		return list;
 	}
+	
+	public boolean addStudent(Student student) {
+	    try {
+	        Connection connection = PostgresConnection.getConnection();
+	        String sql = "INSERT INTO students (mssv, name, gender, major, password) VALUES (?, ?, ?, ?, ?)";
+	        PreparedStatement stmt = connection.prepareStatement(sql);
+	        stmt.setString(1, student.getMssv());
+	        stmt.setString(2, student.getName());
+	        stmt.setString(3, student.getGender());
+	        stmt.setString(4, student.getMajor());
+	        stmt.setString(5, student.getPassword());
+
+	        int rowsInserted = stmt.executeUpdate();
+	        connection.close();
+	        return rowsInserted > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	public boolean updateStudent(Student student) {
+	    try {
+	        Connection connection = PostgresConnection.getConnection();
+	        String sql = "UPDATE students SET name = ?, gender = ?, major = ?, password = ? WHERE mssv = ?";
+	        PreparedStatement stmt = connection.prepareStatement(sql);
+	        stmt.setString(1, student.getName());
+	        stmt.setString(2, student.getGender());
+	        stmt.setString(3, student.getMajor());
+	        stmt.setString(4, student.getPassword());
+	        stmt.setString(5, student.getMssv());
+
+	        int rowsUpdated = stmt.executeUpdate();
+	        connection.close();
+	        return rowsUpdated > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	public boolean deleteStudentByMssv(String mssv) {
+	    try {
+	        Connection connection = PostgresConnection.getConnection();
+	        String sql = "DELETE FROM students WHERE mssv = ?";
+	        PreparedStatement stmt = connection.prepareStatement(sql);
+	        stmt.setString(1, mssv);
+
+	        int rowsDeleted = stmt.executeUpdate();
+	        connection.close();
+	        return rowsDeleted > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	public List<Student> getAllStudents() {
+	    List<Student> list = new ArrayList<>();
+	    try {
+	        Connection connection = PostgresConnection.getConnection();
+	        String sql = "SELECT * FROM students";
+	        PreparedStatement stmt = connection.prepareStatement(sql);
+	        ResultSet resultSet = stmt.executeQuery();
+
+	        while (resultSet.next()) {
+	            Student student = new Student();
+	            student.setId(resultSet.getInt("id"));
+	            student.setMssv(resultSet.getString("mssv"));
+	            student.setName(resultSet.getString("name"));
+	            student.setGender(resultSet.getString("gender"));
+	            student.setMajor(resultSet.getString("major"));
+	            list.add(student);
+	        }
+
+	        connection.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
 }
